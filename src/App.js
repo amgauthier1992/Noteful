@@ -2,7 +2,7 @@ import React from "react";
 import NoteList from "./Note";
 import Store from "./Store";
 import FolderList from "./FolderList";
-// import { Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {

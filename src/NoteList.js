@@ -1,12 +1,12 @@
 import React from "react";
-import Note from "./Note";
+// import Note from "./Note";
 
 class NoteList extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    return;
+    return <h2>hi</h2>;
   }
 }
 
