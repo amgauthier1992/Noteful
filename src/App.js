@@ -2,7 +2,7 @@ import React from "react";
 import NoteList from "./Note";
 import Store from "./Store";
 import FolderList from "./FolderList";
-import { Route } from "react-router-dom";
+// import { Route } from "react-router-dom";
 import "./App.css";
 
 class App extends React.Component {
@@ -12,6 +12,19 @@ class App extends React.Component {
       store: Store,
     };
   }
+
+  // handleFolderSelected = () => {};
+
+  // handleFolderAdd = () => {};
+
+  // handleFolderDelete = () => {};
+
+  // handleNoteSelected = () => {};
+
+  // hamdleNoteAdd = () => {};
+
+  // handleNoteDelete = () => {};
+
   render() {
     const { store } = this.state;
     return (
@@ -20,24 +33,20 @@ class App extends React.Component {
           <h1>Noteful</h1>
         </header>
         <div className="Folder-Sidebar">
-          <div className="Folder-List">
-            {store.folders.map((folder) => (
-              <FolderList key={folder.id} header={folder.name} />
-            ))}
-          </div>
+          <FolderList
+            folders={store.folders}
+            // handleFolderAdd={this.handleFolderAdd}
+            // handleFolderDelete={this.handleFolderDelete}
+            // handleFolderSelected = () => {};
+          />
         </div>
         <div className="Note-section">
-          <div className="Note-List">
-            {store.notes.map((note) => (
-              <NoteList
-                key={note.id}
-                header={note.name}
-                modified={note.modified}
-                folderId={note.folderId}
-                content={note.content}
-              />
-            ))}
-          </div>
+          <NoteList
+            notes={store.notes}
+            // handleNoteAdd={this.handleNoteAdd}
+            // handleNoteDelete={this.handleNoteDelete}
+            // handleNoteSelected = () => {};
+          />
         </div>
       </main>
     );

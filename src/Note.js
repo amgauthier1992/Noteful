@@ -2,8 +2,9 @@ import React from "react";
 
 export default function Note(props) {
   return (
-    <div>
-      <h2>hi</h2>
+    <div className="note">
+      <h2>{props.header}</h2>
+      <p>{props.modified}</p>
     </div>
   );
 }
