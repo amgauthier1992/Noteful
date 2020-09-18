@@ -1,54 +1,84 @@
 import React from "react";
-import NoteList from "./Note";
 import Store from "./Store";
-import FolderList from "./FolderList";
-// import { Route } from "react-router-dom";
+// import NoteList from "./NoteList";
+// import FolderList from "./FolderList";
+import { Route, Link } from "react-router-dom";
 import "./App.css";
+import HomePage from "./HomePage";
+import FolderPage from "./FolderPage";
+import NotePage from "./NotePage";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       store: Store,
+      // folders: [],
+      // notes: [],
     };
   }
 
-  // handleFolderSelected = () => {};
+  // handleFolderSelected = (e) => {};
 
   // handleFolderAdd = () => {};
 
-  // handleFolderDelete = () => {};
+  // handleFolderDelete = (folderId) => {};
 
-  // handleNoteSelected = () => {};
+  // handleNoteSelected = (e) => {};
 
-  // hamdleNoteAdd = () => {};
+  // handleNoteAdd = () => {};
 
-  // handleNoteDelete = () => {};
+  // handleNoteDelete = (noteId) => {
+  //   const { notes } = this.state.notes;
+  //   let newNotes = notes.filter((noteId) => {
+  //     noteId !== notes.id;
+  //   });
+  //   this.setState({ notes: newNotes });
+  // };
 
   render() {
+    // const { folders, notes } = this.state;
     const { store } = this.state;
+    console.log(store.notes);
     return (
-      <main className="App">
+      <div className="App">
         <header className="App-header">
-          <h1>Noteful</h1>
+          <h1>
+            <Link to="/">Noteful</Link>
+          </h1>
         </header>
-        <div className="Folder-Sidebar">
-          <FolderList
-            folders={store.folders}
-            // handleFolderAdd={this.handleFolderAdd}
-            // handleFolderDelete={this.handleFolderDelete}
-            // handleFolderSelected = () => {};
-          />
-        </div>
-        <div className="Note-section">
-          <NoteList
-            notes={store.notes}
-            // handleNoteAdd={this.handleNoteAdd}
-            // handleNoteDelete={this.handleNoteDelete}
-            // handleNoteSelected = () => {};
-          />
-        </div>
-      </main>
+        <Route
+          exact
+          path="/"
+          render={(routeProps) => (
+            <HomePage
+              {...routeProps}
+              folders={this.state.store.folders}
+              notes={this.state.store.notes}
+            />
+          )}
+        />
+        <Route
+          path="/folder/:folderId"
+          render={(routeProps) => (
+            <FolderPage
+              {...routeProps}
+              folders={this.state.store.folders}
+              notes={this.state.store.notes}
+            />
+          )}
+        />
+        <Route
+          path="/note/:noteId"
+          render={(routeProps) => (
+            <NotePage
+              {...routeProps}
+              folders={this.state.store.folders}
+              notes={this.state.store.notes}
+            />
+          )}
+        />
+      </div>
     );
   }
 }

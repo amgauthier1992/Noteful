@@ -4,30 +4,67 @@
 
 .App-header {
   background-color: #282c34;
-  /* min-height: 100vh; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  min-height: 15vh;
   font-size: calc(10px + 2vmin);
   color: white;
+  width: 100%;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+.content-container {
+  display: flex;
+}
+
 .Folder-Sidebar {
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  /* top: 0; /* Stay at the top */
-  /* left: 0; */
-  /* background-color: #111; Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding-top: 20px;
+  width: 200px;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.List-Notes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  /* border: 1px solid black; */
+  width: 736px;
+  height: 100%;
 }
 
 .folder {
   border: 1px solid black;
+  width: 199px;
+}
+
+.note {
+  text-align: left;
+  border: 1px solid black;
+  width: 700px;
+  margin-bottom: 20px;
+}
+
+.note h2,
+.note p {
+  margin-left: 10px;
+}
+
+.note button {
+  margin-left: 600px;
+  margin-bottom: 10px;
+}
+
+.add-note-btn {
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  display: block;
+  margin-bottom: 10px;
 }

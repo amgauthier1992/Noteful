@@ -15,11 +15,12 @@ export default function NoteList(props) {
             content={note.content}
           />
         ))}
-        <button type="button" onClick={() => props.handleNoteDelete}>
-          Delete Note
-        </button>
       </div>
-      <button type="button" onClick={() => props.handleAddNote}>
+      <button
+        className="add-note-btn"
+        type="button"
+        onClick={() => props.handleAddNote}
+      >
         Add Note
       </button>
     </section>
