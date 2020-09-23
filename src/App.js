@@ -46,11 +46,12 @@ class App extends React.Component {
   };
 
   addFolder = (folder) => {
-    const newFolders = this.state.folders.push(folder);
-    this.props.history.push("/");
+    const newFolders = [...this.state.folders];
+    newFolders.push(folder);
     this.setState({
       folders: newFolders,
     });
+    this.props.history.push("/");
   };
 
   addNote = (note) => {

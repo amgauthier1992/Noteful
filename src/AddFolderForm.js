@@ -11,9 +11,12 @@ class AddFolderForm extends React.Component {
         value: "",
         touched: false,
       },
+      error: null,
     };
   }
   static contextType = Context;
+
+  //So after you POST a folder to the server, you should get back an object of folder that has an id in it.
 
   //We need to format the data as JSON then stringify it before sending
   handleSubmit(event) {
@@ -38,7 +41,7 @@ class AddFolderForm extends React.Component {
       })
       .then((data) => {
         this.setState({ name: { value: folder } });
-        this.context.addFolder(folder);
+        this.context.addFolder(data);
       })
       .catch((err) => {
         this.setState({
@@ -51,16 +54,15 @@ class AddFolderForm extends React.Component {
     this.setState({ name: { value: name, touched: true } });
   }
 
-  //this.state.name.value logs as an object. We need it to be a string
   validateFolderName() {
     console.log(this.state.name.value);
-    const folderName = JSON.stringify(this.state.name.value);
+    const folderName = this.state.name.value;
     console.log(folderName);
-    if (folderName.length === 0) {
+    if (folderName.trim() == "") {
       return "Folder name is required";
     }
-    if (folderName.match(/[0-9]/)) {
-      return "Folder name must only contain letters";
+    if (!folderName.match(/^[A-Za-z]+$/)) {
+      return "Folder name must only contain letters A-Z (not case sensitive)";
     }
   }
 
