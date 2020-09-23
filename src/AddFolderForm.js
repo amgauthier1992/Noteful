@@ -15,10 +15,11 @@ class AddFolderForm extends React.Component {
   }
   static contextType = Context;
 
+  //We need to format the data as JSON then stringify it before sending
   handleSubmit(event) {
     event.preventDefault();
     const { name } = this.state;
-    const folder = name.value;
+    const folder = { name: name.value };
     const url = "http://localhost:9090/folders";
     const options = {
       method: "POST",
@@ -50,10 +51,16 @@ class AddFolderForm extends React.Component {
     this.setState({ name: { value: name, touched: true } });
   }
 
+  //this.state.name.value logs as an object. We need it to be a string
   validateFolderName() {
-    const folderName = this.state.name.value.trim();
+    console.log(this.state.name.value);
+    const folderName = JSON.stringify(this.state.name.value);
+    console.log(folderName);
     if (folderName.length === 0) {
       return "Folder name is required";
+    }
+    if (folderName.match(/[0-9]/)) {
+      return "Folder name must only contain letters";
     }
   }
 
