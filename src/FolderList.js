@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Context from "./Context";
 import Folder from "./Folder";
 
@@ -13,9 +14,11 @@ class FolderList extends React.Component {
             <Folder key={i} id={folder.id} header={folder.name} />
           ))}
         </div>
-        <button type="button" onClick={() => addFolder}>
-          Add Folder
-        </button>
+        <Link to="/addFolder">
+          <button type="button" onClick={() => addFolder}>
+            Add Folder
+          </button>
+        </Link>
       </section>
     );
   }

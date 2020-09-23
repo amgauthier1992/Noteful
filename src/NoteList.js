@@ -5,11 +5,11 @@ import Note from "./Note";
 class NoteList extends React.Component {
   static contextType = Context;
   render() {
-    const { notes, addNote } = this.context;
+    const { addNote } = this.context;
     return (
       <section className="Note-List">
         <div className="List-Notes">
-          {notes.map((note, i) => (
+          {this.props.notes.map((note, i) => (
             <Note
               key={i}
               id={note.id}

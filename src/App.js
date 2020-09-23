@@ -1,11 +1,13 @@
 import React from "react";
 // import Store from "./Store";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
 import Context from "./Context";
 import "./App.css";
 import HomePage from "./HomePage";
 import FolderPage from "./FolderPage";
 import NotePage from "./NotePage";
+import AddFolderForm from "./AddFolderForm";
+import AddNoteForm from "./AddNoteForm";
 // import Folder from "./Folder";
 
 class App extends React.Component {
@@ -43,6 +45,14 @@ class App extends React.Component {
     });
   };
 
+  addFolder = (folder) => {
+    const newFolders = this.state.folders.push(folder);
+    this.props.history.push("/");
+    this.setState({
+      folders: newFolders,
+    });
+  };
+
   addNote = (note) => {
     this.setState({
       notes: [...this.state.notes, note],
@@ -50,7 +60,9 @@ class App extends React.Component {
   };
 
   deleteNote = (noteId) => {
+    console.log(noteId);
     const newNotes = this.state.notes.filter((note) => note.id !== noteId);
+    this.props.history.push("/");
     this.setState({
       notes: newNotes,
     });
@@ -100,6 +112,7 @@ class App extends React.Component {
       folders: this.state.folders,
       notes: this.state.notes,
       addNote: this.addNote,
+      addFolder: this.addFolder,
       deleteNote: this.deleteNote,
     };
 
@@ -115,6 +128,11 @@ class App extends React.Component {
             exact
             path="/"
             component={HomePage}
+            //purpose of render is sending down props aside from route props
+            //if you are sending down props, you also need to send down
+            //route props or else it wont work. In this context,
+            //the component attribute sets the route props.
+
             // render={(routeProps) => (
             //   <HomePage {...routeProps} folders={folders} notes={notes} />
             // )}
@@ -133,10 +151,14 @@ class App extends React.Component {
             //   <NotePage {...routeProps} folders={folders} notes={notes} />
             // )}
           />
+          <Route path="/addFolder" component={AddFolderForm} />
+          <Route path="/addNote" component={AddNoteForm} />
         </Context.Provider>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
+
+//wrapping App in withRouter makes route props accessible in App.
