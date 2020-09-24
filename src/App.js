@@ -8,6 +8,7 @@ import FolderPage from "./FolderPage";
 import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
+// import Proptypes from "prop-types";
 // import Folder from "./Folder";
 
 class App extends React.Component {
@@ -55,9 +56,12 @@ class App extends React.Component {
   };
 
   addNote = (note) => {
+    const newNotes = [...this.state.notes];
+    newNotes.push(note);
     this.setState({
-      notes: [...this.state.notes, note],
+      notes: newNotes,
     });
+    this.props.history.push("/");
   };
 
   deleteNote = (noteId) => {
@@ -159,6 +163,10 @@ class App extends React.Component {
     );
   }
 }
+
+// App.propTypes = {
+//   history: Proptypes.objectOf
+// }
 
 export default withRouter(App);
 

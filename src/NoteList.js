@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Context from "./Context";
 import Note from "./Note";
 
@@ -21,9 +22,15 @@ class NoteList extends React.Component {
             />
           ))}
         </div>
-        <button className="add-note-btn" type="button" onClick={() => addNote}>
-          Add Note
-        </button>
+        <Link to="/addNote">
+          <button
+            className="add-note-btn"
+            type="button"
+            onClick={() => addNote}
+          >
+            Add Note
+          </button>
+        </Link>
       </section>
     );
   }

@@ -32,6 +32,7 @@ class AddFolderForm extends React.Component {
       },
     };
     //POST request here
+    console.log(JSON.stringify(folder));
     fetch(url, options)
       .then((res) => {
         if (!res.ok) {
@@ -40,7 +41,7 @@ class AddFolderForm extends React.Component {
         return res.json();
       })
       .then((data) => {
-        this.setState({ name: { value: folder } });
+        this.setState({ name: { value: folder.name } });
         this.context.addFolder(data);
       })
       .catch((err) => {
@@ -87,7 +88,6 @@ class AddFolderForm extends React.Component {
             className="addFolder-btn"
             type="submit"
             disabled={this.validateFolderName()}
-            // onClick={(e) => addFolderRequest(this.context.addFolder)}
           >
             Add Folder
           </button>
