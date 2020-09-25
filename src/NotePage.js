@@ -32,10 +32,10 @@ export default function NotePage(props) {
           console.log(currentFolder);
           return (
             <div className="content-container">
+              <Link to="/">
+                <button className="back-btn">Go Back</button>
+              </Link>
               <div className="Folder-Sidebar">
-                <Link to="/">
-                  <button className="back-btn">Go Back</button>
-                </Link>
                 <div className="folder">
                   <h2>{currentFolder.name}</h2>
                 </div>
