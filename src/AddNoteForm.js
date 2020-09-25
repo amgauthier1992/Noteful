@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
 import ValidationError from "./ValidationError";
+import propTypes from "prop-types";
 
 class AddNoteForm extends React.Component {
   constructor(props) {
@@ -130,10 +131,11 @@ class AddNoteForm extends React.Component {
             <ValidationError message={this.validateNoteName()} />
           )}
           <label htmlFor="note-content-select">Content:</label>
-          <input
-            type="text"
+          <textarea
             name="note-content"
             id="note-content"
+            rows="6"
+            cols="50"
             onChange={(e) => this.updateNoteContent(e.target.value)}
           />
           {this.state.content.touched && (
@@ -167,5 +169,21 @@ class AddNoteForm extends React.Component {
     );
   }
 }
+
+AddNoteForm.propTypes = {
+  name: propTypes.shape({
+    value: propTypes.string,
+    touched: propTypes.bool,
+  }),
+  content: propTypes.shape({
+    value: propTypes.string,
+    touched: propTypes.bool,
+  }),
+  folder: propTypes.shape({
+    value: propTypes.string,
+    touched: propTypes.bool,
+  }),
+  error: propTypes.bool,
+};
 
 export default AddNoteForm;

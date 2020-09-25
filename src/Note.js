@@ -1,6 +1,7 @@
 import React from "react";
 import Context from "./Context";
 import { Link } from "react-router-dom";
+import Proptypes from "prop-types";
 
 function deleteNoteRequest(noteId, callback) {
   fetch(`http://localhost:9090/notes/${noteId}`, {
@@ -17,7 +18,7 @@ function deleteNoteRequest(noteId, callback) {
       }
       return res.json();
     })
-    .then((data) => {
+    .then(() => {
       callback(noteId);
     })
     .catch((error) => {
@@ -48,5 +49,8 @@ export default function Note(props) {
   );
 }
 
-// props.notes.map((note) => {
-// const notes = props.notes.map((note, idx) => {
+Note.propTypes = {
+  id: Proptypes.string,
+  header: Proptypes.string,
+  modified: Proptypes.string,
+};

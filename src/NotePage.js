@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
+// import Proptypes from "prop-types";
 
 export default function NotePage(props) {
   console.log(props.match.params.noteId);
@@ -17,41 +18,56 @@ export default function NotePage(props) {
             return note;
           }
         });
-
-        //now that we found our "note" aka currentNote, we can now loop through
-        //folders to also display the corresponding folder that matches the note's
-        //folder id.
-        const currentFolder = context.folders.find((folder) => {
-          if (currentNote.folderId === folder.id) {
-            return folder;
-          }
-        });
-        return (
-          <div className="content-container">
-            <div className="Folder-Sidebar">
-              <Link to="/">
-                <button className="back-btn">Go Back</button>
-              </Link>
-              <div className="folder">
-                <h2>{currentFolder.name}</h2>
+        if (currentNote == undefined) {
+          return <h2>Currently Loading...</h2>;
+        } else {
+          //now that we found our "note" aka currentNote, we can now loop through
+          //folders to also display the corresponding folder that matches the note's
+          //folder id.
+          const currentFolder = context.folders.find((folder) => {
+            if (currentNote.folderId === folder.id) {
+              return folder;
+            }
+          });
+          console.log(currentFolder);
+          return (
+            <div className="content-container">
+              <div className="Folder-Sidebar">
+                <Link to="/">
+                  <button className="back-btn">Go Back</button>
+                </Link>
+                <div className="folder">
+                  <h2>{currentFolder.name}</h2>
+                </div>
+              </div>
+              <div className="Note-section">
+                <div className="note">
+                  <h2>{currentNote.name}</h2>
+                  <p>Date modified on: {currentNote.modified}</p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      context.deleteNote(props.match.params.noteId)
+                    }
+                  >
+                    Delete Note
+                  </button>
+                  <p>{currentNote.content}</p>
+                </div>
               </div>
             </div>
-            <div className="Note-section">
-              <div className="note">
-                <h2>{currentNote.name}</h2>
-                <p>Date modified on: {currentNote.modified}</p>
-                <button
-                  type="button"
-                  onClick={() => context.deleteNote(props.match.params.noteId)}
-                >
-                  Delete Note
-                </button>
-                <p>{currentNote.content}</p>
-              </div>
-            </div>
-          </div>
-        );
+          );
+        }
       }}
     </Context.Consumer>
   );
 }
+
+// NotePage.propTypes = {
+//   match: Proptypes.shape({
+//     isExact: PropTypes.bool,
+//     params: PropTypes.object,
+//     path: PropTypes.string,
+//     url: PropTypes.string,
+//   }),
+// };

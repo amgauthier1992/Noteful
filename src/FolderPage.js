@@ -1,4 +1,5 @@
 import React from "react";
+// import proptypes from "prop-types";
 import FolderList from "./FolderList";
 import NoteList from "./NoteList";
 import Context from "./Context";

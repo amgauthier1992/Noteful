@@ -3,11 +3,16 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 15vh;
+  background-color: #8594b4;
+  /* min-height: 15vh; */
+  padding: 10px 20px 10px 20px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  top: 0;
   font-size: calc(10px + 2vmin);
   color: white;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .App-link {
@@ -22,10 +27,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-top: 20px;
   width: 200px;
   height: 100%;
   border: 1px solid black;
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
 .List-Notes {
@@ -62,6 +68,8 @@
 
 .add-note-btn {
   margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .back-btn {
@@ -110,6 +118,11 @@ select#note-folder-select {
   margin-left: auto;
   margin-right: auto;
   width: 200px;
+}
+
+a:visited {
+  text-decoration: none;
+  color: blue;
 }
 
 div.error {

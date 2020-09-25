@@ -8,18 +8,14 @@ import FolderPage from "./FolderPage";
 import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
-// import Proptypes from "prop-types";
 // import Folder from "./Folder";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      folders: [],
-      notes: [],
-      error: null,
-    };
-  }
+  state = {
+    folders: [],
+    notes: [],
+    error: null,
+  };
 
   // handleFolderSelected = (e) => {};
 
@@ -163,10 +159,6 @@ class App extends React.Component {
     );
   }
 }
-
-// App.propTypes = {
-//   history: Proptypes.objectOf
-// }
 
 export default withRouter(App);
 
