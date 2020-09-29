@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
 import ValidationError from "./ValidationError";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
 
 class AddFolderForm extends React.Component {
   constructor(props) {
@@ -78,8 +78,8 @@ class AddFolderForm extends React.Component {
           <label htmlFor="folderName">Folder Name:</label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="folderName"
+            id="folderName"
             onChange={(e) => this.updateFolderName(e.target.value)}
           />
           {this.state.name.touched && (
@@ -98,13 +98,13 @@ class AddFolderForm extends React.Component {
   }
 }
 
-AddFolderForm.propTypes = {
-  name: propTypes.shape({
-    value: propTypes.string,
-    touched: propTypes.bool,
-  }),
-  error: propTypes.bool,
-};
+// AddFolderForm.propTypes = {
+//   name: propTypes.shape({
+//     value: propTypes.string,
+//     touched: propTypes.bool,
+//   }),
+//   error: propTypes.bool,
+// };
 
 //dont validate variables created inside of a handler. validate things from
 //state and props being passed down. propTypes generally go right above export

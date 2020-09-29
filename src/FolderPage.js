@@ -1,5 +1,5 @@
 import React from "react";
-// import proptypes from "prop-types";
+import propTypes from "prop-types";
 import FolderList from "./FolderList";
 import NoteList from "./NoteList";
 import Context from "./Context";
@@ -39,5 +39,16 @@ class FolderPage extends React.Component {
     );
   }
 }
+
+FolderPage.propTypes = {
+  match: propTypes.shape({
+    isExact: propTypes.bool,
+    params: propTypes.shape({
+      folderId: propTypes.string,
+    }),
+    path: propTypes.string,
+    url: propTypes.string,
+  }),
+};
 
 export default FolderPage;

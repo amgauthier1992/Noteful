@@ -8,6 +8,7 @@ import FolderPage from "./FolderPage";
 import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
+import ErrorBoundary from "./ErrorBoundary";
 // import Folder from "./Folder";
 
 class App extends React.Component {
@@ -138,20 +139,24 @@ class App extends React.Component {
             //   <HomePage {...routeProps} folders={folders} notes={notes} />
             // )}
           />
-          <Route
-            path="/folder/:folderId"
-            component={FolderPage}
-            // render={(routeProps) => (
-            //   <FolderPage {...routeProps} folders={folders} notes={notes} />
-            // )}
-          />
-          <Route
-            path="/note/:noteId"
-            component={NotePage}
-            // render={(routeProps) => (
-            //   <NotePage {...routeProps} folders={folders} notes={notes} />
-            // )}
-          />
+          <ErrorBoundary>
+            <Route
+              path="/folder/:folderId"
+              component={FolderPage}
+              // render={(routeProps) => (
+              //   <FolderPage {...routeProps} folders={folders} notes={notes} />
+              // )}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Route
+              path="/note/:noteId"
+              component={NotePage}
+              // render={(routeProps) => (
+              //   <NotePage {...routeProps} folders={folders} notes={notes} />
+              // )}
+            />
+          </ErrorBoundary>
           <Route path="/addFolder" component={AddFolderForm} />
           <Route path="/addNote" component={AddNoteForm} />
         </Context.Provider>

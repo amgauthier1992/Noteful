@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
 import ValidationError from "./ValidationError";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
 
 class AddNoteForm extends React.Component {
   constructor(props) {
@@ -35,9 +35,9 @@ class AddNoteForm extends React.Component {
     //   modified: new Date(),
     // };
     const note = {
-      name: event.target["note-name"].value,
-      content: event.target["note-content"].value,
-      folderId: event.target["note-folder-id"].value,
+      name: event.target["note-name-select"].value,
+      content: event.target["note-content-select"].value,
+      folderId: event.target["note-folder-select"].value,
       modified: new Date(),
     };
     const url = "http://localhost:9090/notes";
@@ -123,8 +123,8 @@ class AddNoteForm extends React.Component {
           <label htmlFor="note-name-select">Note Name:</label>
           <input
             type="text"
-            name="note-name"
-            id="note-name"
+            name="note-name-select"
+            id="note-name-select"
             onChange={(e) => this.updateNoteName(e.target.value)}
           />
           {this.state.name.touched && (
@@ -132,8 +132,8 @@ class AddNoteForm extends React.Component {
           )}
           <label htmlFor="note-content-select">Content:</label>
           <textarea
-            name="note-content"
-            id="note-content"
+            name="note-content-select"
+            id="note-content-select"
             rows="6"
             cols="50"
             onChange={(e) => this.updateNoteContent(e.target.value)}
@@ -144,7 +144,7 @@ class AddNoteForm extends React.Component {
           <label htmlFor="note-folder-select">Folder</label>
           <select
             id="note-folder-select"
-            name="note-folder-id"
+            name="note-folder-select"
             onChange={(e) => this.updateNoteFolder(e.target.value)}
           >
             <option value={null}>...</option>
@@ -170,20 +170,20 @@ class AddNoteForm extends React.Component {
   }
 }
 
-AddNoteForm.propTypes = {
-  name: propTypes.shape({
-    value: propTypes.string,
-    touched: propTypes.bool,
-  }),
-  content: propTypes.shape({
-    value: propTypes.string,
-    touched: propTypes.bool,
-  }),
-  folder: propTypes.shape({
-    value: propTypes.string,
-    touched: propTypes.bool,
-  }),
-  error: propTypes.bool,
-};
+// AddNoteForm.propTypes = {
+//   name: propTypes.shape({
+//     value: propTypes.string,
+//     touched: propTypes.bool,
+//   }),
+//   content: propTypes.shape({
+//     value: propTypes.string,
+//     touched: propTypes.bool,
+//   }),
+//   folder: propTypes.shape({
+//     value: propTypes.string,
+//     touched: propTypes.bool,
+//   }),
+//   error: propTypes.bool,
+// };
 
 export default AddNoteForm;
