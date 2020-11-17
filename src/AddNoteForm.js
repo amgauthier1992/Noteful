@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
 import ValidationError from "./ValidationError";
+import config from "./config"
 // import propTypes from "prop-types";
 
 class AddNoteForm extends React.Component {
@@ -37,15 +38,16 @@ class AddNoteForm extends React.Component {
     const note = {
       name: event.target["note-name-select"].value,
       content: event.target["note-content-select"].value,
-      folderId: event.target["note-folder-select"].value,
+      folderid: event.target["note-folder-select"].value,
       modified: new Date(),
     };
-    const url = "http://localhost:9090/notes";
+    const url = "http://localhost:8000/notes";
     const options = {
       method: "POST",
       body: JSON.stringify(note),
       headers: {
         "Content-Type": "application/json",
+        "authorization": `Bearer ${config.API_KEY}`
       },
     };
     //POST request here
@@ -81,8 +83,8 @@ class AddNoteForm extends React.Component {
     this.setState({ content: { value: content, touched: true } });
   }
 
-  updateNoteFolder(folderId) {
-    this.setState({ folder: { value: folderId, touched: true } });
+  updateNoteFolder(folderid) {
+    this.setState({ folder: { value: folderid, touched: true } });
   }
 
   validateNoteName() {
@@ -105,9 +107,9 @@ class AddNoteForm extends React.Component {
   }
 
   validateFolderSelect() {
-    const folderId = this.state.folder.value;
-    console.log(folderId);
-    if (folderId.trim() === "" || folderId.trim() === "...") {
+    const folderid = this.state.folder.value;
+    console.log(folderid);
+    if (folderid.trim() === "" || folderid.trim() === "...") {
       return "You must specify a corresponding folder to store this new note";
     }
   }

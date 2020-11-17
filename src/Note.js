@@ -1,13 +1,15 @@
 import React from "react";
 import Context from "./Context";
 import { Link } from "react-router-dom";
-import Proptypes from "prop-types";
+import config from "./config"
+// import Proptypes from "prop-types";
 
 function deleteNoteRequest(noteId, callback) {
-  fetch(`http://localhost:9090/notes/${noteId}`, {
+  fetch(`http://localhost:8000/notes/${noteId}`, {
     method: "DELETE",
     headers: {
       "content-type": "application/json",
+      authorization: `Bearer ${config.API_KEY}`
     },
   })
     .then((res) => {
@@ -16,7 +18,7 @@ function deleteNoteRequest(noteId, callback) {
           throw error;
         });
       }
-      return res.json();
+      return res //we dont return res.json() here since it's a delete
     })
     .then(() => {
       callback(noteId);
@@ -31,17 +33,21 @@ export default function Note(props) {
     <Context.Consumer>
       {(context) => (
         <div className="note">
-          <Link to={`/note/${props.id}`}>
+          <Link to={`/notes/${props.id}`}>
             <h2>{props.header}</h2>
           </Link>
           <p>Date modified on: {props.modified}</p>
           <button
-            type="button"
+            className="edit-note-btn">
+            <Link to={"/editNote"}>Edit</Link>  
+          </button>
+          <button
+            className="delete-note-btn"
             onClick={() => {
               deleteNoteRequest(props.id, context.deleteNote);
             }}
           >
-            Delete Note
+            Delete
           </button>
         </div>
       )}
@@ -49,8 +55,8 @@ export default function Note(props) {
   );
 }
 
-Note.propTypes = {
-  id: Proptypes.string,
-  header: Proptypes.string,
-  modified: Proptypes.string,
-};
+// Note.propTypes = {
+//   id: Proptypes.string,
+//   header: Proptypes.string,
+//   modified: Proptypes.string,
+// };

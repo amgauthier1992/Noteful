@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
 
 export default function NotePage(props) {
   console.log(props.match.params.noteId);
@@ -15,7 +15,7 @@ export default function NotePage(props) {
       {(context) => {
         const currentNote = context.notes.find((note) => {
           //noteId from line 149 of app.js
-          if (note.id === props.match.params.noteId) {
+          if (note.id === Number(props.match.params.noteId)) {
             return note;
           }
         });
@@ -23,7 +23,7 @@ export default function NotePage(props) {
         //folders to also display the corresponding folder that matches the note's
         //folder id.
         const currentFolder = context.folders.find((folder) => {
-          if (currentNote.folderId === folder.id) {
+          if (currentNote.folderid === folder.id) {
             return folder;
           }
         });
@@ -48,6 +48,12 @@ export default function NotePage(props) {
                 >
                   Delete Note
                 </button>
+                <button
+                  type="button"
+                  onClick={() => context.updateNote(props.match.params.noteId)}
+                >
+                  Edit Note
+                </button>
                 <p>{currentNote.content}</p>
               </div>
             </div>
@@ -58,13 +64,13 @@ export default function NotePage(props) {
   );
 }
 
-NotePage.propTypes = {
-  match: propTypes.shape({
-    isExact: propTypes.bool,
-    params: propTypes.shape({
-      noteId: propTypes.string,
-    }),
-    path: propTypes.string,
-    url: propTypes.string,
-  }),
-};
+// NotePage.propTypes = {
+//   match: propTypes.shape({
+//     isExact: propTypes.bool,
+//     params: propTypes.shape({
+//       noteId: propTypes.string,
+//     }),
+//     path: propTypes.string,
+//     url: propTypes.string,
+//   }),
+// };

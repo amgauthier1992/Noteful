@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
 import ValidationError from "./ValidationError";
+import config from "./config"
 // import propTypes from "prop-types";
 
 class AddFolderForm extends React.Component {
@@ -24,12 +25,13 @@ class AddFolderForm extends React.Component {
     event.preventDefault();
     const { name } = this.state;
     const folder = { name: name.value };
-    const url = "http://localhost:9090/folders";
+    const url = "http://localhost:8000/folders";
     const options = {
       method: "POST",
       body: JSON.stringify(folder),
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${config.API_KEY}`
       },
     };
     //POST request here

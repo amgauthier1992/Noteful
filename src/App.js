@@ -1,5 +1,4 @@
 import React from "react";
-// import Store from "./Store";
 import { Route, Link, withRouter } from "react-router-dom";
 import Context from "./Context";
 import "./App.css";
@@ -8,8 +7,10 @@ import FolderPage from "./FolderPage";
 import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
+import EditFolderForm from "./EditFolderForm"
+import EditNoteForm from "./EditNoteForm"
 import ErrorBoundary from "./ErrorBoundary";
-// import Folder from "./Folder";
+import config from "./config"
 
 class App extends React.Component {
   state = {
@@ -18,23 +19,12 @@ class App extends React.Component {
     error: null,
   };
 
-  // handleFolderSelected = (e) => {};
-
-  // handleFolderAdd = () => {};
-
-  // handleFolderDelete = (folderId) => {};
-
-  // handleNoteSelected = (e) => {};
-
-  // handleNoteAdd = () => {};
-
-  // handleNoteDelete = (noteId) => {
-  //   const { notes } = this.state.notes;
-  //   let newNotes = notes.filter((noteId) => {
-  //     noteId !== notes.id;
-  //   });
-  //   this.setState({ notes: newNotes });
-  // };
+  setFolders = (folders) => {
+    this.setState({
+      folders,
+      error: null,
+    });
+  };
 
   setNotes = (notes) => {
     this.setState({
@@ -61,6 +51,14 @@ class App extends React.Component {
     this.props.history.push("/");
   };
 
+  deleteFolder = (folderid) => {
+    const newFolders = this.state.folders.filter((folder) => folder.id !== folderid);
+    this.props.history.push("/")
+    this.setState({
+      folders: newFolders
+    })
+  }
+
   deleteNote = (noteId) => {
     console.log(noteId);
     const newNotes = this.state.notes.filter((note) => note.id !== noteId);
@@ -70,12 +68,25 @@ class App extends React.Component {
     });
   };
 
+  updateFolder = (updatedFolder) => {
+    this.setState({
+      folders: this.state.folders.map(folder => folder.id !== updatedFolder.id ? folder : updatedFolder)
+    })
+  }
+
+  updateNote = (updatedNote) => {
+    this.setState({
+      notes: this.state.notes.map(note => note.id !== updatedNote.id ? note : updatedNote)
+    })
+  }
+
   componentDidMount() {
     //Get folders from API
-    fetch("http://localhost:9090/folders", {
+    fetch("http://localhost:8000/folders", {
       method: "GET",
       headers: {
         "content-type": "application/json",
+        "Authorization": `Bearer ${config.API_KEY}`
       },
     })
       .then((resFolders) => {
@@ -84,16 +95,15 @@ class App extends React.Component {
         }
         return resFolders.json();
       })
-      .then((folders) => {
-        this.setState({ folders });
-      })
+      .then(this.setFolders)
       .catch((error) => this.setState({ error }));
 
     //Get notes from API
-    fetch("http://localhost:9090/notes", {
+    fetch("http://localhost:8000/notes", {
       method: "GET",
       headers: {
         "content-type": "application/json",
+        "Authorization": `Bearer ${config.API_KEY}`
       },
     })
       .then((resNotes) => {
@@ -107,15 +117,15 @@ class App extends React.Component {
   }
 
   render() {
-    // const { folders, notes } = this.state;
-    // console.log(folders);
-    // console.log(notes);
     const contextValue = {
       folders: this.state.folders,
       notes: this.state.notes,
-      addNote: this.addNote,
       addFolder: this.addFolder,
+      addNote: this.addNote,
+      deleteFolder: this.deleteFolder,
       deleteNote: this.deleteNote,
+      updateFolder: this.updateFolder,
+      updateNote: this. updateNote
     };
 
     return (
@@ -141,8 +151,8 @@ class App extends React.Component {
           />
           <ErrorBoundary>
             <Route
-              path="/folder/:folderId"
-              component={FolderPage}
+              path="/folders/:folderid"
+              component={FolderPage} //when the path is met folderpage is rendered
               // render={(routeProps) => (
               //   <FolderPage {...routeProps} folders={folders} notes={notes} />
               // )}
@@ -150,7 +160,7 @@ class App extends React.Component {
           </ErrorBoundary>
           <ErrorBoundary>
             <Route
-              path="/note/:noteId"
+              path="/notes/:noteId"
               component={NotePage}
               // render={(routeProps) => (
               //   <NotePage {...routeProps} folders={folders} notes={notes} />
@@ -159,6 +169,8 @@ class App extends React.Component {
           </ErrorBoundary>
           <Route path="/addFolder" component={AddFolderForm} />
           <Route path="/addNote" component={AddNoteForm} />
+          <Route path="/editFolder/:folderid" component={EditFolderForm} />
+          <Route path="/editNote/:noteid" component={EditNoteForm} />
         </Context.Provider>
       </div>
     );
