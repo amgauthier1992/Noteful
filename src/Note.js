@@ -39,7 +39,7 @@ export default function Note(props) {
           <p>Date modified on: {props.modified}</p>
           <button
             className="edit-note-btn">
-            <Link to={"/editNote"}>Edit</Link>  
+            <Link to={`/editNote/${props.id}`}>Edit</Link>  
           </button>
           <button
             className="delete-note-btn"

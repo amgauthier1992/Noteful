@@ -8,7 +8,7 @@ import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
 import EditFolderForm from "./EditFolderForm"
-import EditNoteForm from "./EditNoteForm"
+// import EditNoteForm from "./EditNoteForm"
 import ErrorBoundary from "./ErrorBoundary";
 import config from "./config"
 
@@ -169,8 +169,12 @@ class App extends React.Component {
           </ErrorBoundary>
           <Route path="/addFolder" component={AddFolderForm} />
           <Route path="/addNote" component={AddNoteForm} />
-          <Route path="/editFolder/:folderid" component={EditFolderForm} />
-          <Route path="/editNote/:noteid" component={EditNoteForm} />
+          <ErrorBoundary>
+            <Route path="/editFolder/:folderid" component={EditFolderForm} />
+          </ErrorBoundary>
+          {/* <ErrorBoundary>
+            <Route path="/editNote/:noteid" component={EditNoteForm} />
+          </ErrorBoundary> */}
         </Context.Provider>
       </div>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { withRouter } from 'react-router-dom'
 import Context from "./Context";
 // import ValidationError from "./ValidationError";
@@ -98,7 +98,7 @@ class EditFolderForm extends React.Component {
     })
   }
 
-  handleClickCancel = () => {
+  handleClickCancel = (e) => {
     this.props.history.push("/")
   };
 
@@ -109,7 +109,7 @@ class EditFolderForm extends React.Component {
         <h2>Edit Folder</h2>
         <form
           className='EditFolder__form'
-          onSubmit={this.handleSubmit}
+          onSubmit={(e) => this.handleSubmit(e)}
         >
           <div className='EditFolder__error' role='alert'>
           {error && <p>{error.message}</p>}
@@ -130,15 +130,15 @@ class EditFolderForm extends React.Component {
             placeholder='Random folder!'
             required
             value={name}
-            onChange={this.handleChangeName}
+            onChange={(e) => this.handleChangeName(e)}
             />
           </div>
           <div className='EditFolder__buttons'>
-            <button type='button' onClick={this.handleClickCancel}>
+            <button type='button' onClick={(e) => this.handleClickCancel(e)}>
               Cancel
             </button>
             {' '}
-            <button type='submit' onClick={this.props.history.push("/")}>
+            <button type='submit' onClick={() => this.props.history.push("/")}>
               Save
             </button>
           </div>
