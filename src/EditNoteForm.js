@@ -1,235 +1,173 @@
-// import React from 'react';
-// // import PropTypes from 'prop-types';
-// import { withRouter } from 'react-router-dom'
-// import BookmarksContext from '../BookmarksContext';
-// import config from '../config'
-// import './EditBookmark.css';
+import React from "react"
+import Context from "./Context"
+import { withRouter } from 'react-router-dom'
+import config from "./config"
 
-// const Required = () => (
-//   <span className='EditBookmark__required'>*</span>
-// )
+class EditNoteForm extends React.Component {
+  static contextType = Context
+  state = {
+    error: null,
+    name: "",
+    content: "",
+    folderid: "",
+  }
 
-// class EditBookmark extends React.Component {
-//   static contextType = BookmarksContext;
+  componentDidMount(){
+    const { noteid } = this.props.match.params
+    fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${config.API_KEY}`
+      }
+    })
+      .then(res => {
+        if(!res.ok)
+          return res.json().then(error => Promise.reject(error))
+        
+        return res.json()
+      })
+      .then(responseData => {
+        this.setState({
+          name: responseData.name,
+          content: responseData.content,
+          folderid: responseData.folderid
+        })
+      })
+      .catch(error => {
+        console.error(error)
+        this.setState({ error })
+      })
+  }
 
-//   state = {
-//     error: null,
-//     id: '',
-//     title: '',
-//     url: '',
-//     description: '',
-//     rating: 1,
-//   }
+  handleChangeName = (e) => {
+    this.setState({
+      name: e.target.value
+    })
+  }
 
-//   //we want to get our bookmark first. so that we can capture
-//   //the current fields that we want to update. In order to get our bookmark, 
-//   //we need to create a GET request to the getById endpoint.
-//   componentDidMount() {
-//     const { bookmarkId } = this.props.match.params
-//     fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
-//       method: 'GET',
-//       headers: {
-//         'authorization': `Bearer ${config.API_KEY}`
-//       }
-//     })
-//       //called after the success or failure of the above operation. The above operation's job
-//       //is to grab an the bookmark with the corresponding bookmarkId. If the response we get from the server,
-//       //is a good response (201 etc.), we return our response and parse it into json. Otherwise, if the response is not ok,
-//       //we return an error which will trigger our catch below and update the error property from null in our state.
-//       .then(res => {
-//         if (!res.ok)
-//           return res.json().then(error => Promise.reject(error))
+  handleChangeContent = (e) => {
+    this.setState({
+      content: e.target.value
+    })
+  }
 
-//         return res.json()
-//       })
-//       //once our response is converted to json, we then take that responseData and use it to update the state
-//       //with the information retrieved from the API for that specific bookmark. This is how we are able to pre-populate
-//       //our fields for our PATCH request below. 
-//       .then(responseData => {
-//         this.setState({
-//           id: responseData.id,
-//           title: responseData.title,
-//           url: responseData.url,
-//           description: responseData.description,
-//           rating: parseInt(responseData.rating),
-//         })
-//       })
-//       .catch(error => {
-//         console.error(error)
-//         this.setState({ error })
-//       })
-//   }
+  handleChangeFolderid = (e) => {
+    this.setState({
+      folderid: e.target.value
+    })
+  }
 
-//   handleChangeTitle = (e) => {
-//     this.setState({
-//       title: e.target.value
-//     })
-//   }
+  handleSubmit = (e) => {
+    console.log(`handleSubmit ran!`)
+    e.preventDefault();
+    const { noteid } = this.props.match.params
+    const { name, content, folderid } = this.state
+    const newNote = { name, content, folderid }
 
-//   handleChangeUrl = (e) => {
-//     this.setState({
-//       url: e.target.value
-//     })
-//   }
+    //PATCH request here
+    fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
+      method: "PATCH",
+      body: JSON.stringify(newNote),
+      headers: {
+        "content-type" : "application/json",
+        "Authorization" : `Bearer ${config.API_KEY}`
+      }
+    })
+      .then(res => {
+        if(!res.ok)
+          return res.json().then(error => Promise.reject(error))
+        
+        return res.json()
+      })
+      .then(responseData => {
+        this.setState({
+          name: responseData.name,
+          content: responseData.content,
+          folderid: responseData.folderid
+        }, () => {
+          this.context.updateNote(responseData)
+          this.props.history.push("/")
+        })
+      })
+      .catch(error => {
+        console.error(error)
+        this.setState({ error })
+      })
+  }
 
-//   handleChangeDescription = (e) => {
-//     this.setState({
-//       description: e.target.value
-//     })
-//   }
+  handleClickCancel = () => {
+    this.props.history.push("/")
+  }
 
-//   handleChangeRating = (e) => {
-//     this.setState({
-//       rating: parseInt(e.target.value)
-//     })
-//   }
+  render(){
+    const { folders } = this.context
+    // const { folders = [] } = this.context;
+    const { error, name, content, folderid } = this.state
+    console.log(folders)
+    console.log(this.state)
+    return (
+      <section className='EditNote'>
+        <h2>Edit Note</h2>
+        <form 
+          className="EditNote__form" 
+          onSubmit={(e) => this.handleSubmit(e)}
+        >
+          <div className='EditNote__error' role='alert'>
+            {error && <p>{error.message}</p>}
+          </div>
+          <div>
+            <label htmlFor='name'>
+              Note Name:
+              {' '}
+            </label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Random Note Name!'
+              required
+              value={name}
+              onChange={(e) => this.handleChangeName(e)}
+            />
+          </div>
+          <textarea
+            type="text"
+            name="content"
+            id="content"
+            rows="6"
+            cols="50"
+            required
+            value={content}
+            onChange={(e) => this.handleChangeContent(e)}
+          />
+          <select
+            id="folders"
+            name="folders"
+            value={folderid}
+            onChange={(e) => this.handleChangeFolderid(e)} //e not e.target.value
+            // onChange={(e) => console.log(e.target.value)}
+          >
+            <option value={null}>...</option>
+            {folders.map((folder) => (
+              <option key={folder.id} value={folder.id}>
+                {folder.name}
+              </option>
+            ))}
+          </select>
+          <div className='EditNote__buttons'>
+            <button type='button' onClick={this.handleClickCancel}>
+              Cancel
+            </button>
+            {' '}
+            <button type='submit'>
+              Save
+            </button>
+          </div>
+        </form>
+      </section>
+    )
+  }
+}
 
-//   handleSubmit = (e) => {
-//     console.log(`handleSubmit ran!`)
-//     e.preventDefault();
-//     //if you dont use curlys this.props.match.params is an object,
-//     //which throws an error.
-//     const { bookmarkId } = this.props.match.params
-//     const { id, title, url, description, rating } = this.state
-//     const newBookmark = { id, title, url, description, rating }
-    
-//     //PATCH request here
-//     fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
-//       method: 'PATCH',
-//       body: JSON.stringify(newBookmark),
-//       headers: {
-//         'content-type': 'application/json',
-//         'authorization': `Bearer ${config.API_KEY}`
-//       },
-//     })
-//       .then(res => {
-//         if (!res.ok){
-//           return res.json().then(error => Promise.reject(error))
-//         }
-//         return res.json()
-//       })
-//       .then(responseData => {
-//         // console.log(responseData)
-//         this.setState({
-//           id: responseData.id,
-//           title: responseData.title,
-//           url: responseData.url,
-//           description: responseData.description,
-//           rating: parseInt(responseData.rating),
-//         }, () => {
-//           this.context.updateBookmark(newBookmark)
-//         })
-//       })
-//       .catch(error => {
-//         console.error(error)
-//         this.setState({ error }) //error: error
-//       })
-//   }
-
-//   resetFields = (newFields) => {
-//     this.setState({
-//       id: newFields.id || '',
-//       title: newFields.title || '',
-//       url: newFields.url || '',
-//       description: newFields.description || '',
-//       rating: newFields.rating || 1,
-//     })
-//   }
-
-//   handleClickCancel = () => {
-//     this.props.history.push('/')
-//   };
-
-//   render() {
-//     const { error, title, url, description, rating } = this.state
-//     return (
-//       <section className='EditBookmark'>
-//         <h2>Edit bookmark</h2>
-//         <form
-//           className='EditBookmark__form'
-//           onSubmit={this.handleSubmit}
-//         >
-//           <div className='EditBookmark__error' role='alert'>
-//             {error && <p>{error.message}</p>}
-//           </div>
-//           <input
-//             type='hidden'
-//             name='id'
-//           />
-//           <div>
-//             <label htmlFor='title'>
-//               Title
-//               {' '}
-//               <Required />
-//             </label>
-//             <input
-//               type='text'
-//               name='title'
-//               id='title'
-//               placeholder='Great website!'
-//               required
-//               value={title}
-//               onChange={this.handleChangeTitle}
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor='url'>
-//               URL
-//               {' '}
-//               <Required />
-//             </label>
-//             <input
-//               type='url'
-//               name='url'
-//               id='url'
-//               placeholder='https://www.great-website.com/'
-//               required
-//               value={url}
-//               onChange={this.handleChangeUrl}
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor='description'>
-//               Description
-//             </label>
-//             <textarea
-//               name='description'
-//               id='description'
-//               value={description}
-//               onChange={this.handleChangeDescription}
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor='rating'>
-//               Rating
-//               {' '}
-//               <Required />
-//             </label>
-//             <input
-//               type='number'
-//               name='rating'
-//               id='rating'
-//               min='1'
-//               max='5'
-//               required
-//               value={rating}
-//               onChange={this.handleChangeRating}
-//             />
-//           </div>
-//           <div className='EditBookmark__buttons'>
-//             <button type='button' onClick={this.handleClickCancel}>
-//               Cancel
-//             </button>
-//             {' '}
-//             <button type='submit'>
-//               Save
-//             </button>
-//           </div>
-//         </form>
-//       </section>
-//     )
-//   }
-// }
-
-
-// export default withRouter(EditBookmark);
+export default withRouter(EditNoteForm);

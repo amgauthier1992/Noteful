@@ -8,7 +8,7 @@ import config from "./config"
 class EditFolderForm extends React.Component {
   static contextType = Context;
   state = {
-    // id: "",
+    // id: "", id doesnt need to be in state. We will never edit it
     name: "",
     error: null,
     // name: {
@@ -19,7 +19,7 @@ class EditFolderForm extends React.Component {
 
   componentDidMount() {
     const { folderid } = this.props.match.params
-    fetch(`http://localhost:8000/folders/${folderid}`, {
+    fetch(`${config.API_ENDPOINT}/folders/${folderid}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -60,7 +60,7 @@ class EditFolderForm extends React.Component {
     const newFolder = { name }
 
     //PATCH request here
-    fetch(`http://localhost:8000/folders/${folderid}`, {
+    fetch(`${config.API_ENDPOINT}/folders/${folderid}`, {
       method: "PATCH",
       body: JSON.stringify(newFolder),
       headers: {
@@ -81,7 +81,13 @@ class EditFolderForm extends React.Component {
           name: responseData.name,
           //name: { value: responseData.name }
         }, () => {
-          this.context.updateFolder(newFolder)
+          //this.context.updateFolder(newFolder) here we arent passing an id
+          //property to the updateFolder method which relies on the id to
+          //perform the update. By using responseData as the argument, it
+          //contains the id by default since we get the id from our fetch.
+          //if you have access to the ID from the fetch request response, then why not just use that?
+          this.context.updateFolder(responseData)
+          this.props.history.push("/")
         })
       })
       .catch(error => {
@@ -98,7 +104,7 @@ class EditFolderForm extends React.Component {
     })
   }
 
-  handleClickCancel = (e) => {
+  handleClickCancel = () => {
     this.props.history.push("/")
   };
 
@@ -134,11 +140,11 @@ class EditFolderForm extends React.Component {
             />
           </div>
           <div className='EditFolder__buttons'>
-            <button type='button' onClick={(e) => this.handleClickCancel(e)}>
+            <button type='button' onClick={this.handleClickCancel}>
               Cancel
             </button>
             {' '}
-            <button type='submit' onClick={() => this.props.history.push("/")}>
+            <button type='submit'>
               Save
             </button>
           </div>

@@ -5,7 +5,7 @@ import config from "./config"
 // import Proptypes from "prop-types";
 
 function deleteNoteRequest(noteId, callback) {
-  fetch(`http://localhost:8000/notes/${noteId}`, {
+  fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
     method: "DELETE",
     headers: {
       "content-type": "application/json",

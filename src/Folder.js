@@ -5,7 +5,7 @@ import config from "./config";
 import Context from "./Context";
 
 function deleteFolderRequest(folderid,cb) {
-  fetch(`http://localhost:8000/folders/${folderid}`, {
+  fetch(`${config.API_ENDPOINT}/folders/${folderid}`, {
     method: "DELETE",
     headers: {
       "content-type": "application/json",

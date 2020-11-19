@@ -1,7 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "./Context";
+import config from "./config"
 // import propTypes from "prop-types";
+
+function deleteNoteRequest(noteId, callback) {
+  fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${config.API_KEY}`
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        return res.json().then((error) => {
+          throw error;
+        });
+      }
+      return res //we dont return res.json() here since it's a delete
+    })
+    .then(() => {
+      callback(noteId);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
 export default function NotePage(props) {
   console.log(props.match.params.noteId);
@@ -42,17 +67,19 @@ export default function NotePage(props) {
               <div className="note">
                 <h2>{currentNote.name}</h2>
                 <p>Date modified on: {currentNote.modified}</p>
+                <Link to={`/editNote/${currentNote.id}`}>
+                  <button
+                    type="button"
+                    // onClick={() => context.updateNote(props.match.params.noteId)}
+                  >
+                  Edit Note
+                  </button>
+                </Link>
                 <button
                   type="button"
-                  onClick={() => context.deleteNote(props.match.params.noteId)}
+                  onClick={() => deleteNoteRequest(props.match.params.noteId, context.deleteNote)}
                 >
                   Delete Note
-                </button>
-                <button
-                  type="button"
-                  onClick={() => context.updateNote(props.match.params.noteId)}
-                >
-                  Edit Note
                 </button>
                 <p>{currentNote.content}</p>
               </div>

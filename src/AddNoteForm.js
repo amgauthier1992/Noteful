@@ -41,13 +41,13 @@ class AddNoteForm extends React.Component {
       folderid: event.target["note-folder-select"].value,
       modified: new Date(),
     };
-    const url = "http://localhost:8000/notes";
+    const url = `${config.API_ENDPOINT}/notes`;
     const options = {
       method: "POST",
       body: JSON.stringify(note),
       headers: {
         "Content-Type": "application/json",
-        "authorization": `Bearer ${config.API_KEY}`
+        "Authorization": `Bearer ${config.API_KEY}`
       },
     };
     //POST request here

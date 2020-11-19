@@ -25,7 +25,7 @@ class AddFolderForm extends React.Component {
     event.preventDefault();
     const { name } = this.state;
     const folder = { name: name.value };
-    const url = "http://localhost:8000/folders";
+    const url = `${config.API_ENDPOINT}/folders`;
     const options = {
       method: "POST",
       body: JSON.stringify(folder),

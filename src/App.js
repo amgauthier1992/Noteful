@@ -8,7 +8,7 @@ import NotePage from "./NotePage";
 import AddFolderForm from "./AddFolderForm";
 import AddNoteForm from "./AddNoteForm";
 import EditFolderForm from "./EditFolderForm"
-// import EditNoteForm from "./EditNoteForm"
+import EditNoteForm from "./EditNoteForm"
 import ErrorBoundary from "./ErrorBoundary";
 import config from "./config"
 
@@ -82,7 +82,7 @@ class App extends React.Component {
 
   componentDidMount() {
     //Get folders from API
-    fetch("http://localhost:8000/folders", {
+    fetch(`${config.API_ENDPOINT}/folders`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -99,7 +99,7 @@ class App extends React.Component {
       .catch((error) => this.setState({ error }));
 
     //Get notes from API
-    fetch("http://localhost:8000/notes", {
+    fetch(`${config.API_ENDPOINT}/notes`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -125,7 +125,7 @@ class App extends React.Component {
       deleteFolder: this.deleteFolder,
       deleteNote: this.deleteNote,
       updateFolder: this.updateFolder,
-      updateNote: this. updateNote
+      updateNote: this.updateNote
     };
 
     return (
@@ -172,9 +172,9 @@ class App extends React.Component {
           <ErrorBoundary>
             <Route path="/editFolder/:folderid" component={EditFolderForm} />
           </ErrorBoundary>
-          {/* <ErrorBoundary>
+          <ErrorBoundary>
             <Route path="/editNote/:noteid" component={EditNoteForm} />
-          </ErrorBoundary> */}
+          </ErrorBoundary>
         </Context.Provider>
       </div>
     );
